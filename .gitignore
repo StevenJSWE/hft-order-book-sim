@@ -1,0 +1,16 @@
+# Go binaries
+/hft-engine
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# C compiled object files
+*.o
+*.out
+
+# OS and IDE specific
+.DS_Store
+.idea/
+.vscode/
