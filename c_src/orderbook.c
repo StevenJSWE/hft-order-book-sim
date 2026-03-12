@@ -1,4 +1,5 @@
 #include "orderbook.h"
+#include <string.h>
 
 void init_orderbook(OrderBook* ob){
     ob->free_head = 0; // Starting at the first slot 

@@ -1,3 +1,6 @@
+#ifndef ORDERBOOK_H
+#define ORDERBOOK_H
+
 #include <stdint.h> 
 
 typedef struct Order {
@@ -37,3 +40,5 @@ typedef struct OrderBook{
 void init_orderbook(OrderBook* ob);
 int32_t add_order(OrderBook* ob, uint64_t id, uint64_t trader_id, uint32_t side, uint64_t price, uint64_t quantity);
 void process_order(OrderBook* ob, uint64_t id, uint64_t trader_id, uint32_t side, uint64_t price, uint64_t quantity);
+
+#endif

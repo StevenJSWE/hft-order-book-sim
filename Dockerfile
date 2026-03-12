@@ -11,6 +11,5 @@ COPY . .
 # Set the CGO include path so it finds orderbook.h
 ENV CGO_CFLAGS="-I/app/c_src"
 
-RUN CGO_ENABLED=1 go build -o engine .
-
+RUN CGO_ENABLED=1 go build -o engine . ./c_src
 CMD ["./engine"]
