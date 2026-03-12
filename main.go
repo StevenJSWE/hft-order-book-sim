@@ -2,7 +2,9 @@ package main
 
 /*
 #cgo CFLAGS: -I./c_src
+#cgo LDFLAGS: -L./c_src
 #include "orderbook.h"
+#include "orderbook.c"
 
 // We declare the book here so Go manages the lifecycle
 OrderBook book;
