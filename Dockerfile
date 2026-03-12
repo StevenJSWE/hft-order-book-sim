@@ -1,4 +1,4 @@
-FROM golang:1.22-bookworm
+FROM golang:1.24-bookworm
 
 # Install C compiler
 RUN apt-get update && apt-get install -y gcc libc6-dev
@@ -9,6 +9,6 @@ WORKDIR /app
 COPY . .
 
 # Build the app (CGO_ENABLED=1 is the magic switch)
-RUN CGO_ENABLED=1 go build -o engine main.go
+RUN CGO_ENABLED=1 go build -o engine .
 
 CMD ["./engine"]
