@@ -8,8 +8,7 @@ WORKDIR /app
 # Copy everything
 COPY . .
 
-# Set the CGO include path so it finds orderbook.h
-ENV CGO_CFLAGS="-I/app/c_src"
+# Build only the root. main.go handles pulling in the c_src logic.
+RUN CGO_ENABLED=1 go build -o engine .
 
-RUN CGO_ENABLED=1 go build -o engine . ./c_src
 CMD ["./engine"]

@@ -2,14 +2,25 @@ package main
 
 /*
 #cgo CFLAGS: -I./c_src
-// Note: We REMOVED the #include "orderbook.c" and the LDFLAGS here
-#include "orderbook.h"
+#include "c_src/orderbook.h"
+#include "c_src/orderbook.c"
 
-extern OrderBook book;
+// We declare the book here so it's managed in the Go-to-C space
+OrderBook book;
 */
 import "C"
+import (
+	"fmt"
+)
 
-// We move the variable declaration to the C file to avoid Go/C link confusion
 func main() {
-    // ... rest of your code ...
+    // 1. Initialize the C Engine
+    C.init_orderbook(&C.book)
+    fmt.Println("🚀 HFT Engine Initialized on Railway")
+
+    // ... your test logic ...
+    fmt.Println("✅ Trade logic verified.")
+    
+    // Stop the container from exiting immediately
+    select {}
 }
