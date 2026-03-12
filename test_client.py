@@ -1,47 +1,39 @@
 import requests
+import random
 import time
 
-# Update this to your live Railway URL
-BASE_URL = "https://hft-order-book-sim-production.up.railway.app/"
-# BASE_URL = "http://localhost:8080" # Uncomment for local testing
+BASE_URL = "https://hft-order-book-sim-production.up.railway.app"
 
-def send_order(order_id, trader_id, side, price, quantity):
-    """
-    Sends an order to the HFT engine.
-    Side: 0 = Buy (Bid), 1 = Sell (Ask)
-    """
-    url = f"{BASE_URL}/order"
+print("🚀 Initiating MENTAL stress test... Press Ctrl+C to stop.")
+
+order_id = 1000
+while True:
+    # Keep prices between 95 and 105 so buyers and sellers constantly collide!
+    side = random.choice([0, 1])
+    price = random.randint(95, 105) 
+    quantity = random.randint(1, 50)
+    
     payload = {
         "id": order_id,
-        "trader_id": trader_id,
+        "trader_id": random.randint(1, 100),
         "side": side,
         "price": price,
         "quantity": quantity
     }
     
-    side_str = "Sell" if side == 1 else "Buy "
-    print(f"📤 Sending {side_str} | Price: {price} | Qty: {quantity}...")
-    
     try:
-        response = requests.post(url, json=payload)
-        response.raise_for_status()
-        print(f"✅ Success! Engine State: {response.json()}\n")
-    except requests.exceptions.RequestException as e:
-        print(f"❌ Error: {e}\n")
-
-if __name__ == "__main__":
-    print(f"--- HFT Engine Stress Test ---")
-    print(f"Targeting: {BASE_URL}\n")
-
-    # 1. Add a resting Buy order at $100
-    send_order(order_id=1000, trader_id=10, side=0, price=100, quantity=50)
-    time.sleep(0.5)
-
-    # 2. Add a resting Sell order at $110 (Doesn't match, book grows)
-    send_order(order_id=1001, trader_id=20, side=1, price=110, quantity=50)
-    time.sleep(0.5)
-
-    # 3. Send a Sell order at $100 (Matches the Buy! Book size should shrink)
-    send_order(order_id=1002, trader_id=30, side=1, price=100, quantity=50)
-
-    print("Test complete. Refresh your browser to see the final resting state.")
+        # Fire the order
+        res = requests.post(f"{BASE_URL}/order", json=payload)
+        data = res.json()
+        
+        # Print the live carnage to the terminal
+        side_str = "🔴 SELL" if side == 1 else "🟢 BUY "
+        print(f"{side_str} {quantity:2} @ ${price:<3} | Book -> Bids: {data['bids']:<4} Asks: {data['asks']}")
+        
+    except Exception as e:
+        print(f"❌ Connection error: {e}")
+        
+    order_id += 1
+    
+    # Sleep for 50 milliseconds (20 requests per second)
+    time.sleep(0.05)
