@@ -5,7 +5,7 @@ package main
 #include "c_src/orderbook.h"
 #include "c_src/orderbook.c"
 
-extern OrderBook book;
+OrderBook book;
 */
 import "C"
 import (
